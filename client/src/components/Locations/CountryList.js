@@ -9,6 +9,13 @@ export default class FetchData extends React.Component {
     countries: [],
   };
 
+  async clickHandler(index) {
+    const url = `http://localhost:5000/api/citiesIn/${index}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+  }
+
  async componentDidMount() {
     const url = "http://localhost:5000/api/showCountries/";
     const response = await fetch(url);
@@ -36,7 +43,7 @@ export default class FetchData extends React.Component {
            variant="scrollable"
            onChange={null}
            >
-          <Tab label ={country.name} key={country._id }>
+          <Tab label ={country.name} key={country._id } onClick={()=>this.clickHandler(country._id)}>
           </Tab>
           </Tabs>
          ))};
