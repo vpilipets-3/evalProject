@@ -2,12 +2,14 @@ const express = require('express');
 const config = require('config');
 const mongoose = require('mongoose');
 const color = require('colors');
+const cors = require('cors')
 
 const app = express();
 
 app.use(express.json({ extended: true }));
+app.use(cors())
 app.use('/api', require('./routes/countryRouter'), require('./routes/cityRouter'));
-const PORT = config.get('port') || 3000;
+const PORT = config.get('port') || 5000;
 
 async function start() {
 	try {
