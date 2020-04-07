@@ -3,24 +3,23 @@ import { Tabs, Tab } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Loading from '../Loader/Loading'
-import TextField from '@material-ui/core/TextField';
+import CityList from '../Locations/CityList';
 
 const styles = {
   Country: {
     padding: 20,
     marginRight: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   City: {
-    padding: 20,
+    padding: 5,
     marginRight: 20,
-    marginTop: 70
+    marginTop: 10,
+    marginLeft: 500
   }
 }
 
 export default class FetchData extends React.Component {
-
- 
 
   state = {
     loading: true,
@@ -28,11 +27,12 @@ export default class FetchData extends React.Component {
     cities: [],
   };
 
+
   async clickHandler(index) {
     const url = `http://localhost:5000/api/citiesIn/${index}`;
     const response = await fetch(url);
     const data = await response.json();
-    this.setState({ cities: data })
+    this.setState({ cities: data, loading: false})
   }
 
   async componentDidMount() {
@@ -57,25 +57,25 @@ export default class FetchData extends React.Component {
 
     return (
       <Grid container>
-        <Grid item lg={3} xs={6}>
+        <Grid item>
           <Paper style={styles.Country} elevation={3}>
             <Tabs orientation="vertical"
               variant="scrollable"
               onChange={null}
-              value={0}
+              value={'auto'}
             >
-              {this.state.countries.map(country => (
-                <Tab label={country.name} key={country._id} onClick={() => this.clickHandler(country._id)}>
+              {this.state.countries.map((country, i) => (
+                <Tab label={country.name} key={country._id} onClick={() => this.clickHandler(country._id)} index={`vertical-tab-${i}`} >
                 </Tab>
               ))};
          </Tabs>
           </Paper>
           <Grid />
         </Grid>
-        <Grid item lg={9} xs={6}>
-          <Paper style={styles.Country} elevation={3}>
+        <Grid itemx>
+          <Paper style={styles.City} elevation={3}>
             {this.state.cities.map(city => (
-              <TextField label={city.name} key={city._id} />
+              <CityList city={city} key={city._id} />
             ))};
               </Paper >
         </Grid >
