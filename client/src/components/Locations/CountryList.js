@@ -23,17 +23,23 @@ const styles = {
 export default class FetchData extends React.Component {
 
   state = {
+    currCountryId: "",
     loading: true,
     countries: [],
     cities: [],
   };
 
-  async clickHandler(index) {
-    const data = await api.getCities(index)
-    this.setState({ cities: data, loading: false })
+  logger(data) {
+    console.log(data)
   }
 
-    async componentDidMount() {
+  async clickHandler(id) {
+    const data = await api.getCities(id);
+    this.setState({ cities: data, currCountryId: id })
+    console.log(this.state.cities);
+  }
+
+  async componentDidMount() {
     const data = await api.getCountries();
     this.setState({ countries: data, loading: false });
   }
@@ -50,7 +56,7 @@ export default class FetchData extends React.Component {
     }
     return (
       <Grid container>
-        <Grid item>
+        <Grid item lg={2} sm={6}>
           <Paper style={styles.Country} elevation={3}>
             <Tabs orientation="vertical"
               variant="scrollable"
@@ -59,18 +65,17 @@ export default class FetchData extends React.Component {
             >
               {this.state.countries.map(country => (
                 <Tab label={country.name} key={country._id} onClick={() => this.clickHandler(country._id)} />
-              ))};      
+              ))};
          </Tabs>
           </Paper>
         </Grid>
-        <Grid item>
+        <Grid item lg={5} sm={6}>
           <Paper style={styles.City} elevation={3}>
-          <NewCityForm/>
-            {this.state.cities.map(city => (
-              <CityList city={city} key={city._id}/>
-            ))
-            };
-              </Paper >
+            {[this.state.currCountryId ? <NewCityForm countryId={this.state.currCountryId} /> : ""]
+            .concat(this.state.cities.map(city => (
+              <CityList city={city} key={city._id} />)))
+            }
+          </Paper >
         </Grid>
       </Grid>
     );

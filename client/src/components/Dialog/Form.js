@@ -15,7 +15,7 @@ import api from '../../api/api'
 export default class Form extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       name: props.name,
       description: props.description,
@@ -30,23 +30,23 @@ export default class Form extends Component {
   };
 
   validate = () => {
-/*
-    switch (name) {
-      case 'nameError':
-        errors.nameError =  ? 'Field must be filled xD' : '';
-        break;
-      case 'descriptionError':
-        errors.descriptionError = value.length < 1 ? 'Field must be filled xD' : '';
-        break;
-      case 'hotelsError':
-        errors.hotelsError = value.length < 1 ? 'Field must be filled xD' : '';
-        break;
-      default:
-        break;
-    }
-    */
+    /*
+        switch (name) {
+          case 'nameError':
+            errors.nameError =  ? 'Field must be filled xD' : '';
+            break;
+          case 'descriptionError':
+            errors.descriptionError = value.length < 1 ? 'Field must be filled xD' : '';
+            break;
+          case 'hotelsError':
+            errors.hotelsError = value.length < 1 ? 'Field must be filled xD' : '';
+            break;
+          default:
+            break;
+        }
+        */
   };
-  
+
   isCapitalCheck(e) {
     this.setState({
       [e.target.name]: e.target.checked
@@ -72,12 +72,13 @@ export default class Form extends Component {
   };
 
   onSubmit(e) {
-      e.preventDefault();
-     console.log(this.state);
-     if(this.state._id === undefined) {
+    e.preventDefault();
+    if (!this.props._id && this.state.countryId) {
       api.createCity(this.state);
-      } else
-     api.updateCity(this.state, this.props._id);
+    }
+    else {
+      api.updateCity(this.state, this.props._id);
+    }
   }
 
   render() {
@@ -124,7 +125,7 @@ export default class Form extends Component {
           <FormControl
             style={{ marginTop: 20 }}
             fullWidth={true}
-            component="Seasons">
+            component="seasons">
             <FormLabel component="legend">Best time to visit</FormLabel>
             <RadioGroup row aria-label="position"
               name={"avaliableIn"}

@@ -16,7 +16,6 @@ const apiController = {
       const response = await fetch(url);
       const data = await response.json();
       return data;
-      //this.setState({ countries: data, loading: false });
     } catch (e) {
       console.log(e);
     }

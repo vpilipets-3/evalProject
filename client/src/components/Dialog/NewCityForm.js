@@ -42,7 +42,7 @@ export default function ControlledExpansionPanels(props) {
           <Typography> Add new city </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <Form></Form>
+          <Form countryId = {props.countryId}></Form>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
