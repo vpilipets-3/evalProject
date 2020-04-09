@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Loading from '../Loader/Loading'
 import CityList from '../Locations/CityList';
+import NewCityForm from '../Dialog/NewCityForm';
 
 const styles = {
   Country: {
@@ -15,7 +16,6 @@ const styles = {
     padding: 5,
     marginRight: 20,
     marginTop: 10,
-    marginLeft: 500
   }
 }
 
@@ -32,14 +32,13 @@ export default class FetchData extends React.Component {
     const url = `http://localhost:5000/api/citiesIn/${index}`;
     const response = await fetch(url);
     const data = await response.json();
-    this.setState({ cities: data, loading: false})
+    this.setState({ cities: data, loading: false })
   }
 
   async componentDidMount() {
     const url = "http://localhost:5000/api/showCountries/";
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
     this.setState({ countries: data, loading: false });
   }
 
@@ -61,29 +60,24 @@ export default class FetchData extends React.Component {
           <Paper style={styles.Country} elevation={3}>
             <Tabs orientation="vertical"
               variant="scrollable"
+              value={0}
               onChange={null}
-              value={'auto'}
             >
-              {this.state.countries.map((country, i) => (
-                <Tab label={country.name} key={country._id} onClick={() => this.clickHandler(country._id)} index={`vertical-tab-${i}`} >
-                </Tab>
+              {this.state.countries.map(country => (
+                <Tab label={country.name} key={country._id} onClick={() => this.clickHandler(country._id)} />
               ))};
          </Tabs>
           </Paper>
-          <Grid />
         </Grid>
-        <Grid itemx>
+        <Grid item>
           <Paper style={styles.City} elevation={3}>
+          <NewCityForm {...this.state.countries}/>
             {this.state.cities.map(city => (
-              <CityList city={city} key={city._id} />
+              <CityList city={city} key={city._id}/>
             ))};
               </Paper >
-        </Grid >
-      </Grid >
+        </Grid>
+      </Grid>
     );
   }
 }
-
-
-
-

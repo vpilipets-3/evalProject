@@ -17,18 +17,16 @@ router.post(
 	cityController.createCity,
 );
 
-router.post(
+router.put(
 	'/cities/:cityId',
 	[
     check('name', 'Invalid name').exists().isString(),
 		check('description', 'Description is necessary').exists().isString(),
 		// check('hotels', 'Name required').exists(),
     check('isCapital', 'isCaptial?').exists(),
-    check('avaliableIn', 'whenAvaliable?').isInt().exists(),
+    check('avaliableIn', 'whenAvaliable?')
 	],
 	cityController.updateCity,
 );
-
-router.delete('/cities/:cityId', cityController.deleteCity);
 
 module.exports = router;

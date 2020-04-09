@@ -3,23 +3,53 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
-
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import Checkbox from '@material-ui/core/Checkbox'
 
 
 export default class Form extends Component {
-  state = {
-    name: '',
-    description: '',
-    hotels: ["test1", "test2"],
-    avaliableIn: '',
-    isCapital: false,
-    countryId: '',
-  }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: props.name,
+      description: props.description,
+      hotels: props.hotels,
+      avaliableIn: props.avaliableIn,
+      isCapital: props.isCapital,
+      countryId: props.countryId,
+
+    }
+    this.isCapitalCheck = this.isCapitalCheck.bind(this)
+    this.seasonChange = this.seasonChange.bind(this)
+  };
+
+  validate = () => {
+/*
+    switch (name) {
+      case 'nameError':
+        errors.nameError =  ? 'Field must be filled xD' : '';
+        break;
+      case 'descriptionError':
+        errors.descriptionError = value.length < 1 ? 'Field must be filled xD' : '';
+        break;
+      case 'hotelsError':
+        errors.hotelsError = value.length < 1 ? 'Field must be filled xD' : '';
+        break;
+      default:
+        break;
+    }
+    */
+  };
 
   async postData(data) {
     try {
-      const result = await fetch('http://localhost:5000/api/createCity', {
-        method: 'post',
+      const result = await fetch(`http://localhost:5000/api/cities/${this.props._id}`, {
+        method: 'put',
         mode: 'cors',
         headers: {
           'Accept': 'application/json',
@@ -33,65 +63,117 @@ export default class Form extends Component {
     }
   }
 
-  change = (e) => {
+  isCapitalCheck(e) {
+    this.setState({
+      [e.target.name]: e.target.checked
+    })
+  };
+
+  hotelsChange(e) {
+    this.setState({
+      [e.target.name]: (e.target.value).split(',')
+    });
+  };
+
+  inputChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
   };
 
-  onSubmit = (e) => {
-    e.preventDefault();
+  seasonChange(e) {
     console.log(this.state);
-    this.props.onSubmit(this.postData(this.state));
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  onSubmit(e) {
+    e.preventDefault();
+     console.log(this.state);
+     this.postData(this.state)
   }
 
   render() {
     return (
       <form>
         <Grid container>
-        <TextField
-          name="name"
-          label="City Title"
-          defaultValue= {this.state.name}
-          onChange={e => this.change(e)} 
-          fullWidth = {true}
+          <TextField
+            error={false}
+            name="name"
+            label="City Title"
+            defaultValue={this.state.name}
+            onChange={e => this.inputChange(e)}
+            fullWidth={true}
           />
-        <br />
-        <TextField
-          name="name"
-          label="Description"
-          multiline
-          rowsMax="4"
-          defaultValue= {this.state.description}
-          onChange={e => this.change(e)} 
-          fullWidth = {true}
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="isCapital"
+                checked={this.state.isCapital}
+                onChange={this.isCapitalCheck}
+                color="primary"
+              />
+            }
+            label="isCapital"
           />
-        <br />
-        <TextField
-          name="name"
-          label="Hotels"
-          defaultValue= {this.state.hotels}
-          onChange={e => this.change(e)} 
-          fullWidth = {true}
+          <TextField
+            error={false}
+            name="description"
+            label="Description"
+            multiline
+            rowsMax="4"
+            defaultValue={this.state.description}
+            onChange={e => this.inputChange(e)}
+            fullWidth={true}
           />
-        <br />
-        <TextField
-          name="name"
-          label="Season"
-          defaultValue= {this.state.name}
-          onChange={e => this.change(e)} 
-          fullWidth = {true}
+          <TextField
+            error={false}
+            name="hotels"
+            label="Hotels" inputChange
+            defaultValue={this.state.hotels}
+            onChange={e => this.hotelsChange(e)}
+            fullWidth={true}
           />
-                    <Button
-        style={{ marginTop: 5}}
-        variant="contained"
-        color="primary"
-        size="small"
-        startIcon={<SaveIcon />}
-        onClick={fields => this.onSubmit(fields)}>
-        Save
+          <FormControl
+            style={{ marginTop: 20 }}
+            fullWidth={true}
+            component="Seasons">
+            <FormLabel component="legend">Best time to visit</FormLabel>
+            <RadioGroup row aria-label="position"
+              name={"avaliableIn"}
+              defaultValue={this.state.avaliableIn}
+              onChange={this.seasonChange}>
+              <FormControlLabel
+                value="Winter"
+                control={<Radio color="primary" />}
+                label="Winter"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="Summer"
+                control={<Radio color="primary" />}
+                label="Summer"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="Both"
+                control={<Radio color="primary" />}
+                label="Both"
+                labelPlacement="end"
+              />
+            </RadioGroup>
+          </FormControl>
+          <Button
+            fullWidth={true}
+            style={{ marginTop: 10 }}
+            variant="contained"
+            color="primary"
+            size="small"
+            startIcon={<SaveIcon />}
+            onClick={fields => this.onSubmit(fields)}>
+            Save
       </Button>
-        <br />
         </Grid>
       </form>
     )

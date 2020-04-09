@@ -39,14 +39,18 @@ const cityController = {
 	},
 	updateCity: async (req, res) => {
 		try {
-			const city = await City.findById(req.params.cityId);
-      city = {
-        ...req.body
-      }
-			await city.save();
+      const city = await City.findById(req.params.cityId);
+      city.name = req.body.name;
+			city.description = req.body.description;
+      city.hotels = req.body.hotels;
+      city.isCapital = req.body.isCapital;
+      city.avaliableIn = req.body.avaliableIn;
+      city.countryId = req.body.countryId;
+      await city.save();
 			return res.json(city);
 		} catch (e) {
-			return res.status(500).json({ message: 'Internal server error' });
+      console.log(e);
+			return res.status(500).json({ message: e });
 		}
   },
   

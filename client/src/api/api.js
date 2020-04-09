@@ -24,3 +24,21 @@ const apiController = {
 };
 
 export default apiController;
+
+
+async postData(data) {
+  try {
+    const result = await fetch('http://localhost:5000/api/createCity', {
+      method: 'post',
+      mode: 'cors',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    })
+    console.log(result);
+  } catch (e) {
+    console.log(e);
+  }
+}
