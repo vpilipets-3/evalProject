@@ -9,6 +9,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox'
+import api from '../../api/api'
 
 
 export default class Form extends Component {
@@ -45,24 +46,7 @@ export default class Form extends Component {
     }
     */
   };
-
-  async postData(data) {
-    try {
-      const result = await fetch(`http://localhost:5000/api/cities/${this.props._id}`, {
-        method: 'put',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json',
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(data),
-      })
-      console.log(result);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
+  
   isCapitalCheck(e) {
     this.setState({
       [e.target.name]: e.target.checked
@@ -82,16 +66,18 @@ export default class Form extends Component {
   };
 
   seasonChange(e) {
-    console.log(this.state);
     this.setState({
       [e.target.name]: e.target.value
     });
   };
 
   onSubmit(e) {
-    e.preventDefault();
+      e.preventDefault();
      console.log(this.state);
-     this.postData(this.state)
+     if(this.state._id === undefined) {
+      api.createCity(this.state);
+      } else
+     api.updateCity(this.state, this.props._id);
   }
 
   render() {

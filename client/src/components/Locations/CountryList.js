@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import Loading from '../Loader/Loading'
 import CityList from '../Locations/CityList';
 import NewCityForm from '../Dialog/NewCityForm';
+import api from '../../api/api'
 
 const styles = {
   Country: {
@@ -27,23 +28,17 @@ export default class FetchData extends React.Component {
     cities: [],
   };
 
-
   async clickHandler(index) {
-    const url = `http://localhost:5000/api/citiesIn/${index}`;
-    const response = await fetch(url);
-    const data = await response.json();
+    const data = await api.getCities(index)
     this.setState({ cities: data, loading: false })
   }
 
-  async componentDidMount() {
-    const url = "http://localhost:5000/api/showCountries/";
-    const response = await fetch(url);
-    const data = await response.json();
+    async componentDidMount() {
+    const data = await api.getCountries();
     this.setState({ countries: data, loading: false });
   }
 
   render() {
-
     if (this.state.loading) {
       return <div>
         <Loading />
@@ -53,7 +48,6 @@ export default class FetchData extends React.Component {
     if (!this.state.countries.length) {
       return <div>No data</div>
     }
-
     return (
       <Grid container>
         <Grid item>
@@ -65,16 +59,17 @@ export default class FetchData extends React.Component {
             >
               {this.state.countries.map(country => (
                 <Tab label={country.name} key={country._id} onClick={() => this.clickHandler(country._id)} />
-              ))};
+              ))};      
          </Tabs>
           </Paper>
         </Grid>
         <Grid item>
           <Paper style={styles.City} elevation={3}>
-          <NewCityForm {...this.state.countries}/>
+          <NewCityForm/>
             {this.state.cities.map(city => (
               <CityList city={city} key={city._id}/>
-            ))};
+            ))
+            };
               </Paper >
         </Grid>
       </Grid>

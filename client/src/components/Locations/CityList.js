@@ -28,16 +28,16 @@ export default function ControlledExpansionPanels(props) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = panel => (event, isExpanded) => {
+    console.log(panel);
     setExpanded(isExpanded ? panel : false);
   };
 
   return (
     <div className={classes.root}>
-      <ExpansionPanel expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+      <ExpansionPanel expanded={expanded === `panel${props.city.name}`} onChange={handleChange(`panel${props.city.name}`)}>
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
+          id={props.city._id}
         >
           <Typography className={classes.heading}>{props.city.name}</Typography>
           <Typography className={classes.secondaryHeading}>{props.city.description}</Typography>
