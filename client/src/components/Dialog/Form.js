@@ -35,7 +35,7 @@ export default class Form extends Component {
     let isError = false;
     const errors = {};
 
-    const format = /[ `!@#$%^&*()_+\-={};':"\\|,.<>?~]/;
+    const format = /[`!@#$%^&*()_+\-={};':"\\|,.<>?~1234567890]/;
     this.setState({
       nameErr: "",
       descriptionErr: "",
@@ -50,7 +50,7 @@ export default class Form extends Component {
     if(format.test(this.state.name))
     {
       isError = true;
-      errors.nameErr = "Title can't contain special charachters!"
+      errors.nameErr = "Title can't contain special charachters and numbers!"
     }
 
     if (!this.state.description) {
@@ -94,7 +94,7 @@ export default class Form extends Component {
     });
   };
 
-  onSubmit(e) {
+   onSubmit(e) {
     e.preventDefault();
     const err = this.validate();
     if(err) {
