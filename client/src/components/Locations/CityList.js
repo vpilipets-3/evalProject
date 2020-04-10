@@ -34,9 +34,9 @@ export default function ControlledExpansionPanels(props) {
 
   return (
     <div className={classes.root}>
-      <ExpansionPanel expanded={expanded === `panel${props.city.name}`} onChange={handleChange(`panel${props.city.name}`)}>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
+      <ExpansionPanel expanded={expanded === `panel${props.expanded}`} onChange={handleChange(`panel${props.expanded}`)}>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
           id={props.city._id}
         >
           <Typography className={classes.heading}>{props.city.name}</Typography>

@@ -84,7 +84,6 @@ export default class Form extends Component {
   };
 
   inputChange(e) {
-    this.validate();
     this.setState({
       [e.target.name]: e.target.value
     });

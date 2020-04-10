@@ -23,16 +23,17 @@ const styles = {
 export default class FetchData extends React.Component {
 
   state = {
+    value: "",
     currCountryId: "",
     loading: true,
     countries: [],
     cities: [],
   };
 
-  async clickHandler(id) {
+  async clickHandler(id, index) {
     try {
       const data = await api.getCities(id);
-      this.setState({ cities: data, currCountryId: id })
+      this.setState({ cities: data, currCountryId: id, value: index})
     } catch (e) {
       console.log(e);
     }
@@ -63,11 +64,11 @@ export default class FetchData extends React.Component {
           <Paper style={styles.Country} elevation={3}>
             <Tabs orientation="vertical"
               variant="scrollable"
-              value={0}
+              value={this.state.value}
               onChange={null}
             >
-              {this.state.countries.map(country => (
-                <Tab label={country.name} key={country._id} onClick={() => this.clickHandler(country._id)} />
+              {this.state.countries.map((country, i) => (
+                <Tab label={country.name} key={country._id} onClick={() => this.clickHandler(country._id, i)} />
               ))};
          </Tabs>
           </Paper>
