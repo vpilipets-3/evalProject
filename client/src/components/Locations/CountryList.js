@@ -29,14 +29,9 @@ export default class FetchData extends React.Component {
     cities: [],
   };
 
-  logger(data) {
-    console.log(data)
-  }
-
   async clickHandler(id) {
     const data = await api.getCities(id);
     this.setState({ cities: data, currCountryId: id })
-    console.log(this.state.cities);
   }
 
   async componentDidMount() {
@@ -71,9 +66,10 @@ export default class FetchData extends React.Component {
         </Grid>
         <Grid item lg={5} sm={6}>
           <Paper style={styles.City} elevation={3}>
-            {[this.state.currCountryId ? <NewCityForm countryId={this.state.currCountryId} /> : ""]
-            .concat(this.state.cities.map(city => (
-              <CityList city={city} key={city._id} />)))
+            {
+              (this.state.cities.map(city => (
+                <CityList city={city} key={city._id} />))
+                .concat(this.state.currCountryId ? <NewCityForm countryId={this.state.currCountryId} /> : ""))
             }
           </Paper >
         </Grid>

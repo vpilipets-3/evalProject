@@ -35,11 +35,11 @@ export default function ControlledExpansionPanels(props) {
     <div className={classes.root}>
       <ExpansionPanel expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <ExpansionPanelSummary
-          expandIcon={<AddIcon />}
+          expandIcon={<AddIcon color={"primary"} />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography> Add new city </Typography>
+          <Typography color={"primary"}> Add new city </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Form countryId = {props.countryId}></Form>

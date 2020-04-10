@@ -15,7 +15,7 @@ import api from '../../api/api'
 export default class Form extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       name: props.name,
       description: props.description,
@@ -23,33 +23,49 @@ export default class Form extends Component {
       avaliableIn: props.avaliableIn,
       isCapital: props.isCapital,
       countryId: props.countryId,
-
+      nameErr: "",
+      descriptionErr: "",
+      hotelsErr: ""
     }
     this.isCapitalCheck = this.isCapitalCheck.bind(this)
     this.seasonChange = this.seasonChange.bind(this)
   };
 
   validate = () => {
-    /*
-        switch (name) {
-          case 'nameError':
-            errors.nameError =  ? 'Field must be filled xD' : '';
-            break;
-          case 'descriptionError':
-            errors.descriptionError = value.length < 1 ? 'Field must be filled xD' : '';
-            break;
-          case 'hotelsError':
-            errors.hotelsError = value.length < 1 ? 'Field must be filled xD' : '';
-            break;
-          default:
-            break;
-        }
-        */
+    let isError = false;
+    const errors = {};
+    this.setState({
+      nameErr: "",
+      descriptionErr: "",
+      hotelsErr: ""
+    });
+    
+    // switch case needed
+    if (!this.state.name) {
+      isError = true;
+      errors.nameErr = "Field can't be empty!"
+    }
+
+    if (!this.state.description) {
+      isError = true;
+      errors.descriptionErr = "Field can't be empty!"
+    }
+
+    if (!this.state.hotels) {
+      isError = true;
+      errors.hotelsErr = "Field can't be empty!"
+    }
+       this.setState({
+         ...this.setState,
+         ...errors
+       });
+
+     return isError;
   };
 
   isCapitalCheck(e) {
     this.setState({
-      [e.target.name]: e.target.checked
+      [e.target.nerrorame]: e.target.checked
     })
   };
 
@@ -73,6 +89,11 @@ export default class Form extends Component {
 
   onSubmit(e) {
     e.preventDefault();
+    const err = this.validate();
+    if(err) {
+      console.log(this.state, err);
+      return 0;
+    }
     if (!this.props._id && this.state.countryId) {
       api.createCity(this.state);
     }
@@ -86,7 +107,8 @@ export default class Form extends Component {
       <form>
         <Grid container>
           <TextField
-            error={false}
+            error={this.state.nameErr}
+            helperText={this.state.nameErr}
             name="name"
             label="City Title"
             defaultValue={this.state.name}
@@ -105,7 +127,8 @@ export default class Form extends Component {
             label="isCapital"
           />
           <TextField
-            error={false}
+            error={this.state.descriptionErr}
+            helperText={this.state.descriptionErr}
             name="description"
             label="Description"
             multiline
@@ -115,9 +138,10 @@ export default class Form extends Component {
             fullWidth={true}
           />
           <TextField
-            error={false}
+            error={this.state.hotelsErr}
+            helperText={this.state.hotelsErr}
             name="hotels"
-            label="Hotels" inputChange
+            label="Hotels"
             defaultValue={this.state.hotels}
             onChange={e => this.hotelsChange(e)}
             fullWidth={true}
@@ -125,7 +149,7 @@ export default class Form extends Component {
           <FormControl
             style={{ marginTop: 20 }}
             fullWidth={true}
-            component="seasons">
+            >
             <FormLabel component="legend">Best time to visit</FormLabel>
             <RadioGroup row aria-label="position"
               name={"avaliableIn"}
