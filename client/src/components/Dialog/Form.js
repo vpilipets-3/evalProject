@@ -41,7 +41,6 @@ export default class Form extends Component {
       descriptionErr: "",
       hotelsErr: ""
     });
-
     // switch case needed
     if (!this.state.name) {
       isError = true;
@@ -73,7 +72,7 @@ export default class Form extends Component {
 
   isCapitalCheck(e) {
     this.setState({
-      [e.target.nerrorame]: e.target.checked
+      [e.target.name]: e.target.checked
     })
   };
 
