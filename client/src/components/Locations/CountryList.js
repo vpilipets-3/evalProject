@@ -30,13 +30,21 @@ export default class FetchData extends React.Component {
   };
 
   async clickHandler(id) {
-    const data = await api.getCities(id);
-    this.setState({ cities: data, currCountryId: id })
+    try {
+      const data = await api.getCities(id);
+      this.setState({ cities: data, currCountryId: id })
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async componentDidMount() {
-    const data = await api.getCountries();
-    this.setState({ countries: data, loading: false });
+    try {
+      const data = await api.getCountries();
+      this.setState({ countries: data, loading: false });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   render() {
