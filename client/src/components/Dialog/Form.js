@@ -34,26 +34,34 @@ export default class Form extends Component {
   validate = () => {
     let isError = false;
     const errors = {};
+
+    const format = /[ `!@#$%^&*()_+\-={};':"\\|,.<>?~]/;
     this.setState({
       nameErr: "",
       descriptionErr: "",
       hotelsErr: ""
     });
-    
+
     // switch case needed
     if (!this.state.name) {
       isError = true;
-      errors.nameErr = "Field can't be empty!"
+      errors.nameErr = "Title can't be empty!"
+    }
+
+    if(format.test(this.state.name))
+    {
+      isError = true;
+      errors.nameErr = "Title can't contain special charachters!"
     }
 
     if (!this.state.description) {
       isError = true;
-      errors.descriptionErr = "Field can't be empty!"
+      errors.descriptionErr = "Description can't be empty!"
     }
 
     if (!this.state.hotels) {
       isError = true;
-      errors.hotelsErr = "Field can't be empty!"
+      errors.hotelsErr = "Must contain hotels!"
     }
        this.setState({
          ...this.setState,
