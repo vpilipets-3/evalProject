@@ -103,8 +103,7 @@ export default class Form extends Component {
     }
     if (!this.props._id && this.state.countryId) {
       api.createCity(this.state);
-    }
-    else {
+    } else {
       api.updateCity(this.state, this.props._id);
     }
   }
