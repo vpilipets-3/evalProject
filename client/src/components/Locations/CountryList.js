@@ -43,7 +43,6 @@ export default class FetchData extends React.Component {
     try {
       const data = await api.getCities(id);
       this.setState({ cities: data, currCountryId: id, value: index })
-      console.log(this.state.currCountryId)
     } catch (e) {
       console.log(e);
     }

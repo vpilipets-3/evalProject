@@ -15,7 +15,7 @@ import api from '../../api/api'
 export default class Form extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       name: props.name,
       description: props.description,
@@ -30,7 +30,6 @@ export default class Form extends Component {
     this.isCapitalCheck = this.isCapitalCheck.bind(this)
     this.seasonChange = this.seasonChange.bind(this)
   };
-
   validate = () => {
     let isError = false;
     const errors = {};
@@ -96,11 +95,13 @@ export default class Form extends Component {
 
    onSubmit(e) {
     e.preventDefault();
+   
     const err = this.validate();
     if(err) {
       console.log(this.state, err);
       return 0;
     }
+    console.log(this.state);
     if (!this.props._id && this.state.countryId) {
       api.createCity(this.state);
     } else {

@@ -5,7 +5,8 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import NewCityForm from '../Dialog/NewCityForm';
+import AddIcon from '@material-ui/icons/Add';
+
 import Form from '../Dialog/Form'
 
 const useStyles = makeStyles(theme => ({
@@ -28,13 +29,12 @@ export default function ControlledExpansionPanels(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const handleChange = panel => (event, isExpanded) => {
-    console.log(panel);
     setExpanded(isExpanded ? panel : false);
   };
 
   return (
     <div className={classes.root}>
-      {props.cities.map((city => (
+      {props.cities.map(city => (
         <ExpansionPanel key={city._id} expanded={expanded === `panel${city.name}`} onChange={handleChange(`panel${city.name}`)}>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
@@ -47,7 +47,17 @@ export default function ControlledExpansionPanels(props) {
             <Form key={city._id} {...city} />
           </ExpansionPanelDetails>
         </ExpansionPanel>
-      ))).concat(<NewCityForm countryId={props.countryId} /> )}
+      )).concat( <ExpansionPanel expanded={expanded === `panelNewCity`} onChange={handleChange(`panelNewCity`)}>
+      <ExpansionPanelSummary
+        expandIcon={<AddIcon color={"primary"} />}
+      >
+        <Typography color={"primary"}> Add new city </Typography>
+    </ExpansionPanelSummary>
+    <ExpansionPanelDetails>
+      <Form countryId = {props.countryId}></Form>
+    </ExpansionPanelDetails>
+  </ExpansionPanel>)}
+
     </div>
   );
 }
